@@ -9,7 +9,7 @@ This public repository defines contracts for **OpenMausBot** (the sole task/appr
 - **Source implemented:** fail-closed, stateless routing *advice*, source-pinned non-executing native engine mapping, and task/result envelope schemas. The preview never schedules a task, calls an LLM, changes a file, grants approval or verifies PC hardware.
 - **Initial policy:** Codex-first, with both direct K2 and Hermes routes disabled until the actual PC host, model, tool/ACP capabilities and boundaries are verified.
 - **Proof:** `SOURCE_COMMITTED` and `TEST_AUTHORED_NOT_RUN` only; runtime implementation and tests are on hold until a separately selected PC-local phase.
-- **Host inventory (2026-11-15):** an OpenCode 2.3.0 desktop session verified the local Windows host and its installed prerequisites. OpenMausBot and Hermes are **not installed** and no Ollama model is present, so no native route is enabled. See [current state](docs/operations/current-state.md).
+- **Host inventory (2026-11-15):** an OpenCode 2.3.0 desktop session verified the local Windows host, and the native components are now installed on `D:` under the working root — OpenMausBot, portable Ollama with the K2 model, and Hermes Agent. Installed is not configured and not validated: no bot, thread, ACP session or inference has run, and both local routes stay disabled. See [current state](docs/operations/current-state.md) and [local PC runtime layout](docs/operations/local-pc-setup.md).
 - **Excluded:** OpenClaw as a second orchestrator, default full access, cross-repository writes without authorization, cloud CI substitution and unattended deployment.
 
 ## Navigation
