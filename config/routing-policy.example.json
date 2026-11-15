@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "mode": "ADVISORY_ONLY",
+  "defaultEngine": "CODEX",
+  "local": {
+    "directEnabled": false,
+    "hermesEnabled": false,
+    "maxEstimatedInputTokens": 4096,
+    "minHermesContextTokens": 64000,
+    "maxConcurrentWorkers": 1
+  },
+  "limits": {
+    "maxDelegationDepth": 1
+  }
+}

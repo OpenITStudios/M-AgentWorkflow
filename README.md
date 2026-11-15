@@ -1,52 +1,56 @@
 # M-AgentWorkflow
 
-**OpenITStudios multi-agent workflow integration — source architecture and governance.**
+**OpenITStudios multi-agent workflow integration — Codex-first, source-only.**
 
-This private repository defines the project-owned coordination and evidence contracts for **OpenMausBot** (task orchestration), **OpenAI Codex** (primary engineering agent), and optional **Hermes Agent + K2-Horizon-7B Q4_K_M through Ollama** (bounded experimental local worker on RTX 3070 8 GB). It is **not a fork**, an installed runtime, or a claim that integrations already work on Windows.
+This private repository defines contracts for **OpenMausBot** (the sole task/approval owner), **OpenAI Codex** (primary engineering), optional **Ollama + K2-Horizon-7B Q4_K_M** (direct bounded text utility), and optional **Hermes ACP/K2** (experimental tool-using worker on RTX 3070 8 GB). It is not a fork, a native OpenMausBot configuration package, an installed runtime or proof that any integration works on Windows.
 
-## Status and responsibilities
+## Current capability and proof
 
-- **Source:** governance files and documentation maintained on the repository's initial `main` branch. Use `docs/operations/current-state.md` for up-to-date source/host proof; never infer readiness from a commit alone.
-- **Primary path:** OpenMausBot delegates an approved task to Codex; a separate reviewer checks evidence and acceptance. One owner per task, permission decision and source of truth.
-- **Local option:** Hermes and K2 are not a replacement for Codex, and long-context/tool-loop capacity on RTX 3070 remains **NOT_EXECUTED** until an authorized PC-local phase.
-- **Out of initial scope:** OpenClaw, duplicated orchestrators, direct cloud CI or Actions, default full disk access, hosted testing in lieu of PC proof, and silent upstream source modifications.
+- **Source implemented:** fail-closed, stateless routing *advice* and task/result envelope schemas. The preview never schedules a task, calls an LLM, changes a file, grants approval or verifies PC hardware.
+- **Initial policy:** Codex-first, with both direct K2 and Hermes routes disabled until the actual PC host, model, tool/ACP capabilities and boundaries are verified.
+- **Proof:** `SOURCE_COMMITTED` and `TEST_AUTHORED_NOT_RUN` only; runtime implementation and tests are on hold until a separately selected PC-local phase.
+- **Excluded:** OpenClaw as a second orchestrator, default full access, cross-repository writes without authorization, cloud CI substitution and unattended deployment.
 
-## Repository navigation
+## Navigation
 
-| Need | Canonical owner |
+| Need | Owner |
 | --- | --- |
-| Current project scope | [CONTEXT.md](CONTEXT.md) |
-| Documentation routing | [docs/README.md](docs/README.md) |
-| Architecture and task state | [docs/architecture/system.md](docs/architecture/system.md), [authority](docs/architecture/authority-and-state.md) |
-| Source rules and permissions | [AGENTS.md](AGENTS.md), [GITHUB_RULES.md](GITHUB_RULES.md), [project policy](.agent-standard/project-policy.md) |
-| Portable standard and parity | [docs/governance/standard-adoption.md](docs/governance/standard-adoption.md) |
-| Integration boundaries | [docs/integrations/README.md](docs/integrations/README.md) |
-| Evidence and acceptance | [docs/operations/current-state.md](docs/operations/current-state.md), [acceptance](docs/operations/acceptance.md) |
+| Stable context and scope | [CONTEXT.md](CONTEXT.md) |
+| Documentation navigation | [docs/README.md](docs/README.md) |
+| Runtime ownership | [system architecture](docs/architecture/system.md) |
+| Routing and task/result formats | [routing contract](docs/architecture/routing-and-contracts.md) |
+| Project permissions | [permission matrix](docs/governance/permission-matrix.md) |
+| Runtime adapter boundaries | [integration docs](docs/integrations/README.md) |
+| Source rules | [AGENTS.md](AGENTS.md), [GITHUB_RULES.md](GITHUB_RULES.md), [project policy](.agent-standard/project-policy.md) |
+| Shared AgentSkill 1:1 | [adoption](docs/governance/standard-adoption.md) |
+| Changing status and test holds | [current state](docs/operations/current-state.md), [acceptance](docs/operations/acceptance.md) |
 
-## Prepare a Windows workspace (later PC-local phase)
+## Advisory routing preview (not a running agent)
 
-Prerequisites are Git, PowerShell and Node.js for optional standard verification. Clone the repository when the PC-local phase has been explicitly selected:
+The source defines a **pure function** `recommendRoute()` and an offline, read-only preview using Node.js and its standard library. They are not connected to the OpenMausBot task API. The example is synthetic and uses a pinned historical SHA intentionally; never reuse its task identity as approval.
+
+```powershell
+# Only when the PC-local phase is independently selected; review the script first.
+node scripts/route-preview.mjs examples/task.readonly.example.json
+```
+
+The expected *source design* is `status=PROPOSED`, `route=CODEX`, `permissionsGranted=false`, `execution=NOT_EXECUTED`. No command has been run on the user's PC or in the connected application.
+
+`config/routing-policy.example.json` is an **advisory source fixture**, not native OpenMausBot/Hermes/Ollama configuration. `config/*.example.yaml` describes roles and proposed model routes; actual installed-version mappings, approval settings and ACP interfaces must be verified before use.
+
+## Future Windows workspace
+
+Prerequisites for optional source checks: Git, PowerShell and Node.js. Only when a PC-local phase is selected:
 
 ```powershell
 git clone https://github.com/OpenITStudios/M-AgentWorkflow.git
 cd M-AgentWorkflow
-```
-
-The portable AgentSkill files are already tracked in this repository at a pinned source commit, with a SHA-256 lock. They **do not require bootstrap cloning to appear**. To verify source identity on your own authorized PC, review and run:
-
-```powershell
 powershell -NoProfile -File .\scripts\check-structure.ps1
 powershell -NoProfile -File .\scripts\verify-agent-standard.ps1
 ```
 
-These commands are *optional verification procedures*, not receipts for this GitHub-only source operation. No model download, executable installation, engine login or runtime test is performed by this repository's source commit.
+The portable AgentSkill files are already tracked at a pinned source revision with an SHA-256 lock. Neither these commands nor their success proves OpenMausBot, Codex, Hermes, Ollama or K2 is installed, configured or performing correctly. The project has no GitHub Actions or cloud test substitute.
 
-For proposed per-engine setup, see [Codex](docs/integrations/codex.md), [OpenMausBot](docs/integrations/openmausbot.md), and [Hermes/K2](docs/integrations/hermes-k2.md). `config/*.example.yaml` are **illustrative contracts**, not validated configuration schemas of those upstream applications.
+## Privacy, contribution and licensing
 
-## Security and proof
-
-Keep credentials, OAuth sessions, caches, transcripts, model files, task data and runtime logs outside Git. Grant only per-task privileges supported by the actual installed host. Read [SECURITY.md](SECURITY.md) and [permission matrix](docs/governance/permission-matrix.md). Keep source reviews distinct from evidence of Windows/RTX 3070 execution.
-
-## Contribution and licensing
-
-[CONTRIBUTING.md](CONTRIBUTING.md) describes scoped source changes. No project license is declared by this repository; visibility alone does not grant an open-source license. Version changes, releases and deployments require separate explicit approval. See [CHANGELOG.md](CHANGELOG.md) for Unreleased notes.
+Keep API credentials, OAuth sessions, caches, private logs, transcripts, model weights and runtime task data outside Git. Only an authenticated host can enforce per-task permissions. See [SECURITY.md](SECURITY.md) and [CONTRIBUTING.md](CONTRIBUTING.md). No project license is declared by this repository. Use [CHANGELOG.md](CHANGELOG.md) for [Unreleased]; releases, tags and deployment require explicit authorization.

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "taskId": "EXAMPLE-READ-001",
+  "kind": "repo_inspection",
+  "objective": "Inspect an approved documentation directory without changing files.",
+  "acceptanceCriteria": [
+    "Read only the approved docs directory and cite the pinned source without any modification."
+  ],
+  "source": {
+    "repository": "OpenITStudios/M-AgentWorkflow",
+    "branch": "main",
+    "head": "9ef970b3cbaef743d4b3267ea8c091bfdc929b95"
+  },
+  "scopePaths": [
+    "docs/"
+  ],
+  "dataBoundary": "cloud_allowed",
+  "risk": "low",
+  "delegationDepth": 0,
+  "estimatedInputTokens": 1200,
+  "requestedWrite": false,
+  "writeApproved": false,
+  "isolatedWorktree": false,
+  "forceLocal": false
+}

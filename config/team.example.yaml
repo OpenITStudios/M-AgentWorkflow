@@ -1,4 +1,5 @@
-# ARCHITECTURE FIXTURE ONLY: not a native OpenMausBot import format.
+# ARCHITECTURE FIXTURE ONLY — not a native OpenMausBot import format.
+# Three conceptual bot identities; optional local runtime uses the same worker slot.
 version: 1
 owner: OpenITStudios/M-AgentWorkflow
 orchestrator: openmausbot
@@ -7,21 +8,17 @@ roles:
     engine: codex
     responsibility: delegated_task_lifecycle
     repository_write: false
-  architect:
+  engineer:
     engine: codex
-    responsibility: source_grounded_design
-    repository_write: false
-  developer:
-    engine: codex
-    responsibility: approved_scoped_implementation
+    responsibility: architecture_and_scoped_engineering
     repository_write: approved_isolated_worktree_only
-  qa_reviewer:
-    engine: codex
-    responsibility: independent_evidence_review
-    repository_write: false
-  utility_worker:
-    engine: hermes
+  local_worker:
+    engine_choices: [ollama_direct, hermes_acp]
+    selected: disabled
     model: ifm/k2-horizon:7b-q4_K_M
-    responsibility: bounded_local_read_only_tasks
-    enabled: false # Until installed-version and local runtime gates pass
+    responsibility: bounded_local_read_only_utility
+    enabled: false
     repository_write: false
+review:
+  mode: independent_codex_context
+  dedicated_bot_required: false

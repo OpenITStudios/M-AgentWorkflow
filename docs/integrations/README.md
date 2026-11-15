@@ -1,9 +1,10 @@
 # Integration Contracts
 
-The entries below are **design and evaluation contracts**, not installed software or native configuration files.
+These documents describe **source contracts**, not installed software or native import files.
 
-- [OpenMausBot](openmausbot.md): single orchestrator; supported engine/version must be verified.
-- [Codex](codex.md): primary software engineering worker and provider-independent evidence rules.
-- [Hermes + K2](hermes-k2.md): optional ACP worker with local Ollama model; GPU and context gates.
+- [OpenMausBot](openmausbot.md): sole coordinator and approval/task owner.
+- [Codex](codex.md): primary engineering executor, model selection independent from agent host.
+- [Hermes + K2](hermes-k2.md): optional ACP worker; direct K2 without Hermes is preferred for no-tool utility tasks.
+- [Routing and envelopes](../architecture/routing-and-contracts.md): fail-closed advisory policy, source schema and evidence handoff.
 
-Do not bind an engine to undocumented flag names or assume ACP delegation tools work on all versions. Check original upstream docs/source at the selected installed version before wiring an adapter.
+Integration approach: **use native engine/ACP/provider support where verified**, do not fork or duplicate the upstream scheduler, permissions broker, or memory database. Tool names, protocol schemas, default model settings and installed-version capability must be checked at the actual runtime before binding. `config/*.example.*` are **not** an OpenMausBot, Hermes, or Ollama production format.

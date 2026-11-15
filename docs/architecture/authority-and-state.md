@@ -7,6 +7,7 @@
 3. Executing host enforces filesystem/shell/network permissions and verifies where commands actually run.
 4. Git is the code source of truth; evidence is tied to exact branch and commit SHA.
 5. Codex/Hermes workers return bounded artifacts and observations; their prose cannot elevate proof status.
+6. The stateless [route advisor](routing-and-contracts.md) emits **PROPOSED** or **BLOCKED** only; it never owns queue state or executes.
 
 ## Lifecycle (proposed, not native platform schema)
 
@@ -16,12 +17,15 @@ Error/hold branches: `RUNNING → BLOCKED`, `RUNNING → FAILED`, `REVIEW → RE
 
 ## Minimal task contract
 
-- `task_id` (coordinator-owned), objective, acceptance criteria, owner and permitted scope.
-- `source_ref`: repo, selected branch, pre-task SHA; for writing, isolated worktree and permitted paths.
-- `executor`: real host and agent application, model/provider, environment limits.
-- `permission`: allowed tools, approval mode, timeout/token budget.
-- `result`: artifact refs, changed SHA/diff, commands, terminal statuses, tool receipts, uncertainty/blocker.
-- `review`: what was verified independently and where evidence is stored.
+See [task envelope schema](../../schemas/task-envelope.schema.json) for the **advisory example**. Its `writeApproved` flag is not an authorization token: the actual host must check the owner's real approval. Required semantics:
+
+- Coordinator-owned `taskId`, objective, acceptance criteria and known user permission.
+- `source`: exact target repo, selected branch, head SHA; allowed paths and separate worktree for scoped write.
+- `kind`, data boundary, risk, estimated context/size, delegation depth and optional local preference.
+- Authenticated host/agent application, provider/model and permission limits (checked by the *real* host).
+- Result with changed source, command/test receipts, explicit unknowns and reviewer decision.
+
+A result may use the [result envelope schema](../../schemas/result-envelope.schema.json) as a reference format. This does not replace OpenMausBot's own task and event APIs. Never put raw private task data, credentials or transcripts into Git.
 
 ## STOP
 

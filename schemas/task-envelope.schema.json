@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/OpenITStudios/M-AgentWorkflow/blob/main/schemas/task-envelope.schema.json",
+  "title": "M-AgentWorkflow advisory task envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "taskId",
+    "kind",
+    "objective",
+    "acceptanceCriteria",
+    "source",
+    "scopePaths",
+    "dataBoundary",
+    "risk",
+    "delegationDepth",
+    "estimatedInputTokens",
+    "requestedWrite",
+    "writeApproved",
+    "isolatedWorktree",
+    "forceLocal"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "taskId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{4,100}$"
+    },
+    "kind": {
+      "enum": [
+        "architecture",
+        "repo_inspection",
+        "code_change",
+        "qa_review",
+        "utility_text",
+        "local_tool",
+        "deterministic"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 2000
+    },
+    "acceptanceCriteria": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 500
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "branch",
+        "head"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "head": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
+      }
+    },
+    "scopePaths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "dataBoundary": {
+      "enum": [
+        "cloud_allowed",
+        "local_only"
+      ]
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "elevated"
+      ]
+    },
+    "delegationDepth": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "estimatedInputTokens": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2000000
+    },
+    "requestedWrite": {
+      "type": "boolean"
+    },
+    "writeApproved": {
+      "type": "boolean"
+    },
+    "isolatedWorktree": {
+      "type": "boolean"
+    },
+    "forceLocal": {
+      "type": "boolean"
+    }
+  }
+}

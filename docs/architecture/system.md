@@ -1,55 +1,56 @@
-# System Architecture — Intended Design
+# System Architecture — Intended Design and Source-Only Policy
 
 ## Scope
 
-Use one orchestrator and two distinct execution paths, not three independent AI leadership loops. This is a **target design**, not evidence of an installed or working integration.
+Use one orchestrator and up to three **execution recommendations**, not three competing AI leadership loops. This is a source design, **not** proof that OpenMausBot or Hermes is installed or working on Windows.
 
 ```text
-[Human Owner / explicit consent]
-                |
-                v
- [OpenMausBot coordination UI]
-  assignment | task ID | approval | cancellation
-          /                      \
-         v                        v
-[Codex CLI/IDE executor]   [Hermes ACP adapter (optional)]
-  primary engineering          |
-  git and tooling        [Ollama local API]
-  planned reviews               |
-                         [K2-Horizon-7B Q4_K_M]
-         \                       /
-          v                     v
-   [Evidence + bounded result handoff]
-                |
-                v
-     [Independent review / Owner]
+[Human owner: goal, scope, approval]
+                 |
+        [OpenMausBot task owner]
+                 |
+    [host-enforced permissions]
+                 |
+       [stateless policy advice]
+             /    |     \
+            /     |      \
+ [Codex native] [Reviewed CLI] [Local task]
+    primary     deterministic    /      \
+ engineering                [Ollama] [Hermes ACP]
+                             direct     |
+                                       [Ollama]
+                                          |
+                                    [K2-Horizon]
+                   \         |          /
+                    [real evidence receipts]
+                             |
+                   [review / human owner]
 ```
 
-## Design responsibilities
+## Ownership
 
-1. **OpenMausBot**: owns global task IDs, delegation and approvals. Cannot implicitly grant OS/GitHub rights; host permission checks still apply.
-2. **Codex**: primary reasoning, architecture, implementation and scoped repo QA (not a guarantee that a test ran).
-3. **Hermes**: translates a delegated, bounded local task into tools/model calls. It must not manage a duplicate global task database.
-4. **Ollama/K2**: local inference, not a computer-control agent by itself. GPU target RTX 3070 8 GB; 64K agent context and reliable multistep tool use are **unverified**.
-5. **OpenClaw**: out of initial scope. If added later, give it messaging-only responsibility or a separately designed edge; no duplicate authority.
+1. **OpenMausBot**: global task IDs, delegation, lifecycle, cancellation and approvals, never a substitute for filesystem permissions.
+2. **Codex**: primary engineering agent for architecture, code, source inspection, and independent review (separate context).
+3. **Script/CLI**: deterministic transformations only through an approved script/host, with real command receipts.
+4. **Direct Ollama/K2**: optional local bounded text utility without Hermes when no agent tools are needed.
+5. **Hermes ACP/K2**: optional experimental local agent when tool-loop, context, ACP and permission enforcement are actually verified.
+6. **OpenClaw**: outside initial scope. Do not introduce a second global orchestrator.
+7. **Git**: repository source of truth; runtime evidence stays on the PC or inside engine-owned state and must identify the exact source SHA.
 
-## Avoid overlapping controls
+## Source policy versus active runtime
 
-- One **task lifecycle** owner: OpenMausBot.
-- One **repository truth**: exact Git branch/commit and current source.
-- One **local permission decision**: the executing host/tool sandbox and explicit owner approvals.
-- One **evidence payload per task**: references to receipts, not copied model assertions.
-- One **model route decision** per task: default Codex, experimental Hermes only when task class and resource budget permit.
+[Routing and handoff](routing-and-contracts.md) defines a **pure offline advisory function** and task/result contracts. It **cannot** submit work, grant approval or claim tests passed. `config/*.example.*` are not native OpenMausBot/Hermes import files.
 
 ## Planned connectors (not implemented)
 
-| Connection | Target interface | Initial state | Blocking proof |
-|---|---|---|---|
-| OpenMausBot → Codex | Built-in Codex engine, version to be pinned | Not configured | Agent handshake and simple verified task |
-| OpenMausBot → Hermes | ACP adapter, version to be pinned | Not configured | Tool availability, context and delegation test |
-| Hermes → Ollama | Local model API | Not configured | Runtime model/version, GPU memory and tool-loop test |
-| OpenClaw (optional) | No initial connection | Out of scope | Separate decision and security review |
+| Connection | Preferred boundary | Missing acceptance |
+| --- | --- | --- |
+| OpenMausBot -> Codex | Installed built-in Codex engine | Authenticated host, scoped read, real receipt |
+| OpenMausBot -> Ollama/K2 | Supported local model provider for text-only utility | Model identity, actual VRAM/context, privacy |
+| OpenMausBot -> Hermes | Installed Hermes ACP engine | Handshake, tools, approvals, cancellation |
+| Hermes -> Ollama/K2 | Installed local inference endpoint | Context >= configured gate, multi-step tool loop |
+| Model outputs -> reviewer | Bounded evidence reference envelope | Source pin, independent proof, explicit unknowns |
 
-## Concurrency
+## Concurrency and budget
 
-Independent read-only research may run concurrently. Changes to shared code require explicitly authorized isolated Git worktrees. Aggregation must verify which SHA, branch, test command and result each worker used. Never accept a worker's claimed PASS without evidence.
+Initial limit: one local worker, no nested worker delegation, no simultaneous writes to a shared worktree. Parallelize independent **read-only** work only when it reduces end-to-end cost. Repo writes require approved isolated worktrees and affected-consumer review. Do not enable CI or native tests during the source-only hold.

@@ -1,20 +1,29 @@
-# DESIGN FIXTURE ONLY: not a native Hermes/Codex/OpenMausBot config.
+# DESIGN FIXTURE ONLY — not a native OpenMausBot/Hermes/Ollama configuration.
+# Executable offline advice uses routing-policy.example.json; never treat these
+# examples, claimed readiness flags or prompts as actual host permission.
 version: 1
 default_engine: codex
-# Actual Codex model is selected through supported, authenticated client configuration.
-# Do not assume a specific model ID is available on every plan.
 routes:
+  - task: deterministic_transform
+    advice: reviewed_script_cli
+    requires: [host_authorization, known_script_identity]
   - task: architecture_or_code_change
-    engine: codex
-    requires: [approved_scope, pinned_branch_head]
+    advice: codex
+    requires: [scoped_repo_branch_head, owner_permission]
   - task: independent_review
-    engine: codex
-    requires: [separate_context, source_evidence]
-  - task: local_low_risk_utility
-    engine: hermes
+    advice: codex_separate_context
+    requires: [source_evidence]
+  - task: local_bounded_text
+    advice: ollama_direct
     model: ifm/k2-horizon:7b-q4_K_M
     enabled: false
-    requires: [pc_host_verified, gpu_budget_verified, tool_loop_verified]
+    requires: [pc_host_verified, local_inference_verified, gpu_budget_verified]
+  - task: local_tool_loop
+    advice: hermes_acp
+    model: ifm/k2-horizon:7b-q4_K_M
+    enabled: false
+    requires: [pc_host_verified, acp_verified, tool_loop_verified, sufficient_context]
 fallback:
-  on_local_failure: codex_within_existing_approved_scope
+  local_only_to_cloud: forbidden
+  cloud_allowed_to_codex: propose_only
   automatic_privilege_escalation: false

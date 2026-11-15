@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/OpenITStudios/M-AgentWorkflow/blob/main/schemas/result-envelope.schema.json",
+  "title": "M-AgentWorkflow evidence reference envelope",
+  "description": "Transport-neutral local evidence references; no transcript, private content or secrets.",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schemaVersion","taskId","source","executionSurface",
+              "engine","status","evidence","uncertainties"],
+  "properties":{
+    "schemaVersion":{"const":1},
+    "taskId":{"type":"string","minLength":4},
+    "source":{
+      "type":"object","additionalProperties":false,
+      "required":["repository","branch","head"],
+      "properties":{
+        "repository":{"type":"string","minLength":3},
+        "branch":{"type":"string","minLength":1},
+        "head":{"type":"string","pattern":"^[0-9a-f]{40}$"}
+      }
+    },
+    "executionSurface":{"enum":["CHATGPT_GITHUB","LOCAL_PC_AGENT","UNKNOWN_SURFACE"]},
+    "engine":{"enum":["codex","hermes","ollama","script","none"]},
+    "status":{"enum":[
+      "SOURCE_REVIEWED","SOURCE_COMMITTED","TEST_AUTHORED_NOT_RUN",
+      "LOCAL_PC_PASS","FAIL","BLOCKED","UNKNOWN"
+    ]},
+    "evidence":{
+      "type":"array",
+      "items":{
+        "type":"object","additionalProperties":false,
+        "required":["kind","reference"],
+        "properties":{
+          "kind":{"enum":["SOURCE_REF","DIFF","COMMAND_RECEIPT","LOG_REF","TEST_RECEIPT"]},
+          "reference":{"type":"string","minLength":1,"maxLength":2048},
+          "verifiedBy":{"type":"string","maxLength":120}
+        }
+      }
+    },
+    "uncertainties":{"type":"array","items":{"type":"string","minLength":1}},
+    "changedHead":{"type":"string","pattern":"^[0-9a-f]{40}$"},
+    "exitCode":{"type":"integer"}
+  }
+}
