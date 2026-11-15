@@ -1,0 +1,20 @@
+# DESIGN FIXTURE ONLY: not a native Hermes/Codex/OpenMausBot config.
+version: 1
+default_engine: codex
+# Actual Codex model is selected through supported, authenticated client configuration.
+# Do not assume a specific model ID is available on every plan.
+routes:
+  - task: architecture_or_code_change
+    engine: codex
+    requires: [approved_scope, pinned_branch_head]
+  - task: independent_review
+    engine: codex
+    requires: [separate_context, source_evidence]
+  - task: local_low_risk_utility
+    engine: hermes
+    model: ifm/k2-horizon:7b-q4_K_M
+    enabled: false
+    requires: [pc_host_verified, gpu_budget_verified, tool_loop_verified]
+fallback:
+  on_local_failure: codex_within_existing_approved_scope
+  automatic_privilege_escalation: false

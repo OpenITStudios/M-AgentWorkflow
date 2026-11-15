@@ -1,0 +1,29 @@
+# Credentials and local overrides
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+config/*.local.*
+
+# Runtime, models, caches and private logs
+runtime/
+local-data/
+artifacts/
+models/
+.cache/
+*.log
+*.sqlite
+*.db
+*.pid
+
+# OS/editor/build
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+node_modules/
+dist/
+build/
