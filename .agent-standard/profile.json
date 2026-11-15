@@ -34,8 +34,8 @@
       "until": "User explicitly selects PC-local validation after source-ready handoff, and the required permissions and runtime evidence are verified."
     }
   ],
-  "dataPolicy": "private-repository",
-  "note": "Read .agent-standard/project-policy.md after shared roots and profile. main is the initial source branch for this private repository. Codex is the preferred engineering engine; Hermes plus K2-Horizon Q4_K_M is an optional local worker; OpenMausBot owns task lifecycle. Source adoption is not evidence of actual PC agent operation.",
+  "dataPolicy": "public-repository",
+  "note": "Read .agent-standard/project-policy.md after shared roots and profile. main is the initial source branch for this public repository (visibility changed from private on 2026-11-15). Codex is the preferred engineering engine; Hermes plus K2-Horizon Q4_K_M is an optional local worker; OpenMausBot owns task lifecycle. Source adoption is not evidence of actual PC agent operation.",
   "workflowPolicy": {
     "sourceSurface": "CHATGPT_GITHUB",
     "localValidationSurface": "LOCAL_PC_AGENT",

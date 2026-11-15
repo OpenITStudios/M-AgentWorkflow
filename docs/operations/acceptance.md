@@ -15,6 +15,8 @@
 
 ## Phase B — Supervised PC-local preparation (separately selected later)
 
+**Entry state observed 2026-11-15 (OpenCode 2.3.0 read-only inventory):** the host is a Windows 11 Pro PC with an RTX 3070 (8192 MiB) and 31.8 GB RAM. OpenMausBot and Hermes are **not installed**, and Ollama is installed without any model. Phase B therefore starts with an authorized installation of the coordinator and a deliberately scoped Codex profile, not with an engine binding. The bullet list below is the acceptance target once that transition is selected.
+
 - Actual authenticated PC-local agent confirmed; record Windows, RTX 3070, VRAM, RAM, driver and running product versions.
 - Verify installed OpenMausBot's Codex, Ollama and Hermes ACP engine definitions, approvals, tool discovery and cancellation. Override the documented local bot/thread **Full access** default with enforced approval and filesystem restrictions; examine delegated Chief-of-Staff permission propagation.
 - Verify Codex scoped read-only operation and denial of an unauthorized file write.

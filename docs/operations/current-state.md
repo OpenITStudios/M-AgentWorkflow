@@ -1,20 +1,21 @@
 # Current State — Single Continuation and Proof Owner
 
-**Source milestone:** initial M-AgentWorkflow governance and architecture import (2026-11-15), followed by a source-only fail-closed routing-contract implementation. Inspect the selected GitHub branch HEAD/commit for the exact immutable source revision; this page does not replace that proof.
+**Source milestone:** initial M-AgentWorkflow governance and architecture import (2026-11-15), a source-only fail-closed routing-contract implementation, and a **read-only PC host inventory** executed under OpenCode 2.3.0 (no installation, no native task, no test execution). Inspect the selected GitHub branch HEAD/commit for the exact immutable source revision; this page does not replace that proof.
 
 | Area | Current state | Evidence or missing proof |
 | --- | --- | --- |
-| GitHub repository | CREATED, private | `OpenITStudios/M-AgentWorkflow`; working branch `main` |
+| GitHub repository | CREATED, **public** | `OpenITStudios/M-AgentWorkflow`; working branch `main`; owner changed visibility from private to public on 2026-11-15; `dataPolicy` in `.agent-standard/profile.json` updated to match |
+| PC agent host | HOST_VERIFIED (OpenCode 2.3.0 desktop) | Local Windows workspace `D:\Work\AI Stuff\AgentWorkflow`; shell and file tools observed running on this PC; root `AGENTS.md` and `.agents/skills/*` discovered and loaded |
 | Architecture and contract docs | SOURCE_AUTHORED | One coordinator, Codex-first, direct Ollama and experimental Hermes boundaries |
 | Routing advisor and envelopes | SOURCE_AUTHORED | `src/policy/route-advice.mjs`, JSON policy, task/result schemas, example |
 | Native engine map | SOURCE_AUTHORED | `src/integrations/native-engine-map.mjs` reviewed against pinned upstream; no installed host detected |
 | Routing tests | TEST_AUTHORED_NOT_RUN | `tests/route-advice.test.mjs` and `tests/native-engine-map.test.mjs`; tests on hold |
-| Portable AgentSkill | SOURCE_ADOPTED | Shared bytes and pinned lock unchanged; effective host use NOT_VERIFIED |
-| OpenMausBot | NOT_CONFIGURED | Installed engine/approval/tool capabilities not observed |
-| Codex | PROJECT_INTEGRATION_NOT_CONFIGURED | Existing Codex use elsewhere is not a runtime receipt for this repository |
-| Direct Ollama/K2 | NOT_CONFIGURED | Model/runtime/GPU/context unverified; route disabled |
-| Hermes ACP/K2 | NOT_CONFIGURED | ACP/tool-loop/64K context unverified; route disabled |
-| Windows / RTX 3070 QA | NOT_EXECUTED | Needs a separately selected authenticated PC-local phase |
+| Portable AgentSkill | SOURCE_ADOPTED | Shared bytes and pinned lock unchanged; effective host use verified only for the loading observation below |
+| OpenMausBot | **NOT_INSTALLED** | No executable, package, service or `~/.openmausbot` configuration found; the coordinator, approval owner and cancellation path are therefore absent on this host |
+| Codex CLI | INSTALLED, AUTHENTICATED, NOT_SCOPED_FOR_THIS_REPO | `codex-cli 0.137.0` (npm global); `codex login status` → "Logged in using ChatGPT"; global `~/.codex/config.toml` sets `[windows] sandbox = "elevated"` and declares no explicit `approval_policy`; this repository has no trusted-project entry; effective per-task sandbox/approval NOT_VERIFIED |
+| Direct Ollama/K2 | NOT_CONFIGURED | Ollama 0.31.1 installed at `%LOCALAPPDATA%\Programs\Ollama`; loopback port 11434 not listening; `~/.ollama/models` contains no manifest or blob, so `ifm/k2-horizon:7b-q4_K_M` is absent |
+| Hermes ACP/K2 | **NOT_INSTALLED** | No `hermes` executable and no Hermes configuration directory found |
+| Windows / RTX 3070 QA | NOT_EXECUTED | Host inventory only: Windows 11 Pro, RTX 3070 8192 MiB (driver 610.62), 31.8 GB RAM, Node.js v24.14.1 |
 
 ## Durable decisions
 
@@ -25,21 +26,29 @@
 - `src/policy/route-advice.mjs` and `src/integrations/native-engine-map.mjs` are **advisory-only**; they do not start, configure or authorize native engines.
 - Source-pinned OpenMausBot v0.1.153 has Codex and Hermes drivers; its documented local bot/thread default is Full access, so no native worker may start until host-enforced restrictions are verified.
 - OpenClaw remains outside initial scope. No default full access, automatic promotion, unattended delete, CI, releases or deployments.
+- The repository is **public** since 2026-11-15. No credentials, personal data, private task data, transcripts, runtime logs or model weights may be committed under that visibility.
+- No native engine is installed on this host. Installing OpenMausBot — and any Hermes, Ollama model or Codex scope change — is a **separately authorized action**, never an automatic consequence of an inventory.
 
 ## Next to do — OpenCode handoff (2026-11-15)
 
 **Selected next client:** OpenCode. This is an **intended handoff**, not proof that OpenCode is installed, that its executor is on the user's PC, or that any test hold is released. The engineering runtime remains **Codex-first**; OpenCode is an agent application/host, not evidence that Codex CLI or a particular OpenAI model is running.
 
-**Continuation anchor:** last completed source commit before this handoff is `64ef614e8bd79fc540e1fb1f22f984dcf8f87a9a` on `main`. On entry, inspect the **fresh** branch HEAD and reconcile any newer commits. Current-state and governing source outrank historical `Next` fields.
+**Continuation anchor:** this pass pinned `main` at `fc2189bb33b920ad01166c18ae9fde568e0f7f4d` (local, `origin/main` and the GitHub branch read agree). The handoff named `64ef614e8bd79fc540e1fb1f22f984dcf8f87a9a` as the last completed source commit before the handoff; `fc2189b` is the handoff document itself. Current-state and governing source outrank historical `Next` fields.
 
-1. **Recover authority and host.** Read root `AGENTS.md`, `GITHUB_RULES.md`, active `.agent-standard/profile.json`, actual `.agent-standard/project-policy.md`, and `.agent-standard/adapters/opencode.md`. Confirm OpenCode version, effective instruction/Skill discovery, permissions, exact working directory, and **where shell/filesystem tools execute**. Do not equate an OpenCode UI/model name with authenticated PC-local execution.
-2. **Inspect installed prerequisites without changing them.** Inventory Windows/GPU evidence, OpenMausBot version, Codex CLI login/engine, Hermes ACP, Ollama and installed K2 model/hash. Compare actual installed interfaces with pinned upstream contract in [native engine mapping](../integrations/native-engines.md); record missing installations as **NOT_CONFIGURED**, not failures to be hidden.
-3. **Secure the host before any task execution.** Verify OpenMausBot's per-bot/thread approval modes are not default `Full access`, delegated Chief-of-Staff permission inheritance, Codex sandbox, and Hermes' effective ACP/MCP/plugin tool inventory. Default to read-only and deny shell/file writes if the host cannot enforce narrower permission. No admin launch, credentials in Git, cross-repository writes, unattended destructive commands, push or deployment.
-4. **Connect the smallest native path when authorized.** Prefer the built-in OpenMausBot `codex` engine; use `hermesAgent` rather than creating a redundant custom ACP wrapper. Keep the `OLLAMA_DIRECT` and `HERMES_ACP` routes disabled until actual model/resource/tool/permission evidence supports enabling them. The source `native-engine-map.mjs` and routing fixtures are **advice only**, not importable settings, approval grants or runtime adapters.
-5. **Separate installation from validation.** Before installing/changing local software or enabling native tasks, verify owner authorization, exact scope and rollback. The repository profile currently sets `executionPolicy.tests=on_hold` and blocks `test`, `ci`, `deploy`, `release`; **do not run tests, CI or substitute cloud execution** until the user explicitly selects PC-local validation and releases the relevant hold. Do not modify the profile to bypass a gate.
-6. **When later authorized for PC validation**, use [acceptance](acceptance.md) in order: scoped Codex read-only + denial test; K2/Ollama inference/VRAM/context; Hermes ACP tool-loop and 64K context feasibility; cancellation/delegation/evidence; then Codex-only versus hybrid efficiency comparison. Keep unproven paths off; report `BLOCKED`/ `NOT_EXECUTED` precisely.
+### Verified in this pass — read-only inventory, no install, no test
 
-**STOP / handoff target:** return the verified PC host identity, pinned repo/version/branch, effective permissions, installed-vs-missing components, exact blocker/next permitted action and evidence level. Do not claim `LOCAL_PC_PASS` from a source commit or a planned command. Keep task status with OpenMausBot, repository milestone status **only here**, and private runtime logs outside Git.
+1. **Authority and host — RECOVERED.** Root `AGENTS.md`, `GITHUB_RULES.md`, `.agent-standard/profile.json`, `.agent-standard/project-policy.md` and `.agent-standard/adapters/opencode.md` were read. Host application: **OpenCode 2.3.0 desktop** (`opencode-cli.exe` running from `%LOCALAPPDATA%\Roaming\ai.opencode.desktop\cli\2.3.0-x64`), workspace and shell target the user's Windows PC. `AGENTS.md` and the four repository Skills (`.agents/skills/`) were discovered and loaded by the running session. No `permissions` block is declared in the user OpenCode config; the effective scope observed in this session is shell plus file edit. Model/provider identity is recorded separately from host identity and is not used as execution proof.
+2. **Installed prerequisites — INVENTORIED.** Compared against the pinned upstream contract in [native engine mapping](../integrations/native-engines.md). Installed: OpenCode 2.3.0, Codex CLI 0.137.0 (ChatGPT-authenticated), Ollama 0.31.1 (no server, no models), Git 2.53.0, Node.js v24.14.1. Missing: OpenMausBot (coordinator), Hermes Agent (ACP worker), and the `ifm/k2-horizon:7b-q4_K_M` Ollama model. All missing items are recorded as **NOT_INSTALLED / NOT_CONFIGURED**, not as failures.
+3. **Host securing — BLOCKED BY ABSENCE, WITH ONE CONFLICT FOUND.** No OpenMausBot per-bot or per-thread approval level exists to audit, no Chief-of-Staff delegation chain exists, and no Hermes ACP toolset exists to inspect. The one material conflict is on the Codex side: the global `~/.codex/config.toml` sets `[windows] sandbox = "elevated"` and declares no explicit `approval_policy`, and the global config also exposes browser/computer-use MCP tooling. That contradicts this project's "no administrator launch, read-only default, scoped inspection" policy. The file is user-global and shared with other repositories, so this repository does not modify it.
+
+### Remaining, in order — each item needs explicit owner authorization
+
+4. **Install the coordinator, deliberately.** Installing OpenMausBot is the prerequisite for every other native step, because it owns task IDs, approval and cancellation. Confirm the exact version, install scope, data location and rollback before installing; the pinned contract references v0.1.153, so verify the actual installed version and its Codex/Hermes drivers before binding.
+5. **Scope Codex before any Codex task.** Decide the approval and sandbox posture for this repository — read-only plus "Ask for approval" — and whether the global `sandbox = "elevated"` setting is replaced with a narrower, non-administrator mode. This is a user-global configuration decision affecting other repositories and is therefore left to the owner.
+6. **Keep both local routes off.** `OLLAMA_DIRECT` and `HERMES_ACP` stay disabled until an actual model, resource and tool-permission evidence base exists: K2 model tag/hash plus VRAM and context residency for Ollama, and `hermes acp --check` plus effective tool inventory, approval-denial behaviour and a real 64K context measurement for Hermes. Do not reduce the 64K requirement to claim compatibility.
+7. **Keep the test hold in place.** `.agent-standard/profile.json` still sets `executionPolicy.tests=on_hold` and blocks `test`, `ci`, `deploy` and `release`. Run nothing — not `tests/route-advice.test.mjs`, not `tests/native-engine-map.test.mjs`, not `scripts/route-preview.mjs`, not `scripts/check-structure.ps1` — until the owner explicitly selects PC-local validation and releases the relevant hold. No cloud CI or GitHub Actions substitute.
+
+**STOP / handoff target:** the verified PC host identity, pinned repo/version/branch, effective permissions, installed-vs-missing components, exact blocker and next permitted action are returned in the agent reply, and the durable status is recorded **here**. Do not claim `LOCAL_PC_PASS` from a source commit or a planned command. Keep task status with OpenMausBot, repository milestone status **only here**, and private runtime logs outside Git.
 
 ## Remaining gates
 
