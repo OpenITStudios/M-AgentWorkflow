@@ -9,7 +9,7 @@ Read the smallest relevant owner. This index is navigation, **not** another rule
 | Routing and task/result envelopes | [architecture/routing-and-contracts.md](architecture/routing-and-contracts.md) |
 | Agent/host permission | [governance/permission-matrix.md](governance/permission-matrix.md) |
 | AgentSkill 1:1 adoption | [governance/standard-adoption.md](governance/standard-adoption.md) |
-| Upstream runtime boundaries | [integrations/README.md](integrations/README.md) |
+| Upstream runtime boundaries | [integrations/README.md](integrations/README.md), [native engine map](integrations/native-engines.md) |
 | Current status and holds | [operations/current-state.md](operations/current-state.md) |
 | Source/native acceptance | [operations/acceptance.md](operations/acceptance.md) |
 

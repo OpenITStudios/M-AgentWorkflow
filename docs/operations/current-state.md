@@ -7,7 +7,8 @@
 | GitHub repository | CREATED, private | `OpenITStudios/M-AgentWorkflow`; working branch `main` |
 | Architecture and contract docs | SOURCE_AUTHORED | One coordinator, Codex-first, direct Ollama and experimental Hermes boundaries |
 | Routing advisor and envelopes | SOURCE_AUTHORED | `src/policy/route-advice.mjs`, JSON policy, task/result schemas, example |
-| Routing tests | TEST_AUTHORED_NOT_RUN | `tests/route-advice.test.mjs`; `tests` on hold |
+| Native engine map | SOURCE_AUTHORED | `src/integrations/native-engine-map.mjs` reviewed against pinned upstream; no installed host detected |
+| Routing tests | TEST_AUTHORED_NOT_RUN | `tests/route-advice.test.mjs` and `tests/native-engine-map.test.mjs`; tests on hold |
 | Portable AgentSkill | SOURCE_ADOPTED | Shared bytes and pinned lock unchanged; effective host use NOT_VERIFIED |
 | OpenMausBot | NOT_CONFIGURED | Installed engine/approval/tool capabilities not observed |
 | Codex | PROJECT_INTEGRATION_NOT_CONFIGURED | Existing Codex use elsewhere is not a runtime receipt for this repository |
@@ -21,7 +22,8 @@
 - Primary software engineering engine: **Codex**; no Claude dependency.
 - One small optional local worker: `ifm/k2-horizon:7b-q4_K_M`, RTX 3070 8 GB **design target**, not benchmark evidence.
 - Text-only local tasks should use direct Ollama once proven; Hermes ACP only when tool use justifies it.
-- `src/policy/route-advice.mjs` is **advisory-only**, not a new scheduler/executor and cannot grant permissions.
+- `src/policy/route-advice.mjs` and `src/integrations/native-engine-map.mjs` are **advisory-only**; they do not start, configure or authorize native engines.
+- Source-pinned OpenMausBot v0.1.153 has Codex and Hermes drivers; its documented local bot/thread default is Full access, so no native worker may start until host-enforced restrictions are verified.
 - OpenClaw remains outside initial scope. No default full access, automatic promotion, unattended delete, CI, releases or deployments.
 
 ## Remaining gates

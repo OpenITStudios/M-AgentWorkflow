@@ -17,5 +17,8 @@
 | AW-013 | Hermes missing ACP, tool-loop, or context | Advisor blocks local-only tool job | Implicit worker promotion |
 | AW-014 | Delegation depth exceeds one | Advisor BLOCKED | Recursive chain of workers |
 | AW-015 | Codex-only baseline versus hybrid | Real matched-task cost, time, success, interventions | Unmeasured claims of efficiency |
+| AW-016 | Newly created local OpenMausBot bot uses default permissions | Explicit per-bot/per-thread Ask level and host enforcement before any run | Full-access execution without consent |
+| AW-017 | Hermes ACP exposes shell, file writes or plugins | Effective restriction or BLOCKED with capability evidence | Chat approval prompt treated as sandbox |
+| AW-018 | Installed version lacks pinned native engine | Explicit source reconciliation, otherwise BLOCKED | Invented driver or silent custom adapter installation |
 
 The source-level route advisor and `node:test` code are authored but **not executed**. Real ACP/permission/VRAM evidence requires an authenticated PC-local agent and separate hold release.

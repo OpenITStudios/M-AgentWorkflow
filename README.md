@@ -6,7 +6,7 @@ This private repository defines contracts for **OpenMausBot** (the sole task/app
 
 ## Current capability and proof
 
-- **Source implemented:** fail-closed, stateless routing *advice* and task/result envelope schemas. The preview never schedules a task, calls an LLM, changes a file, grants approval or verifies PC hardware.
+- **Source implemented:** fail-closed, stateless routing *advice*, source-pinned non-executing native engine mapping, and task/result envelope schemas. The preview never schedules a task, calls an LLM, changes a file, grants approval or verifies PC hardware.
 - **Initial policy:** Codex-first, with both direct K2 and Hermes routes disabled until the actual PC host, model, tool/ACP capabilities and boundaries are verified.
 - **Proof:** `SOURCE_COMMITTED` and `TEST_AUTHORED_NOT_RUN` only; runtime implementation and tests are on hold until a separately selected PC-local phase.
 - **Excluded:** OpenClaw as a second orchestrator, default full access, cross-repository writes without authorization, cloud CI substitution and unattended deployment.
@@ -20,7 +20,7 @@ This private repository defines contracts for **OpenMausBot** (the sole task/app
 | Runtime ownership | [system architecture](docs/architecture/system.md) |
 | Routing and task/result formats | [routing contract](docs/architecture/routing-and-contracts.md) |
 | Project permissions | [permission matrix](docs/governance/permission-matrix.md) |
-| Runtime adapter boundaries | [integration docs](docs/integrations/README.md) |
+| Runtime adapter boundaries | [integration docs](docs/integrations/README.md), [native engine map](docs/integrations/native-engines.md) |
 | Source rules | [AGENTS.md](AGENTS.md), [GITHUB_RULES.md](GITHUB_RULES.md), [project policy](.agent-standard/project-policy.md) |
 | Shared AgentSkill 1:1 | [adoption](docs/governance/standard-adoption.md) |
 | Changing status and test holds | [current state](docs/operations/current-state.md), [acceptance](docs/operations/acceptance.md) |

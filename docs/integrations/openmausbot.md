@@ -8,6 +8,10 @@
 - Direct Ollama provider for bounded text-only K2 utility work when enabled and tested.
 - Hermes ACP engine when a **real** tool-using local worker is required, and tool availability/approval are verified.
 
+OpenMausBot v0.1.153 source confirms built-in `codex` and `hermesAgent` drivers. Prefer them; do not create a redundant custom ACP engine. Ollama direct means model discovery, not a proven standalone driver ID. See [pinned native mapping](native-engines.md).
+
+**Security:** the upstream local bot/thread default is Full access. Explicitly reduce every relevant bot and thread to Ask, then verify enforceable filesystem and tool restrictions. Hermes ACP exposes terminal, patch and file-write tools by default. A chat approval mode alone is not a sandbox.
+
 Documented upstream interfaces are not proof the selected Windows release supports each behavior exactly. Do not assume `coordinate_bots`, ACP tool forwarding, model switching or approval inheritance works in all versions.
 
 ## Contract at integration boundary

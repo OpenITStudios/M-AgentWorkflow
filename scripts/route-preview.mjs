@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { resolve, dirname, join } from "node:path";
 import { recommendRoute } from "../src/policy/route-advice.mjs";
+import { mapToNativeEngine } from "../src/integrations/native-engine-map.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 if (process.argv.length !== 3) {
@@ -17,7 +18,7 @@ if (process.argv.length !== 3) {
     ]);
     // No untrusted user flags can promote local runtime readiness in this preview.
     const advice = recommendRoute(task, {}, policy);
-    process.stdout.write(JSON.stringify(advice, null, 2) + "\n");
+    process.stdout.write(JSON.stringify({ ...advice, nativeBinding: mapToNativeEngine(advice) }, null, 2) + "\n");
     if (advice.status === "BLOCKED") process.exitCode = 1;
   } catch (error) {
     process.stderr.write("Route preview failed: invalid or unreadable JSON input.\n");

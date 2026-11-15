@@ -8,6 +8,7 @@
 - Canonical AgentSkill files, root rules and profile retained unchanged with existing 1:1 lock.
 - Pure routing advisor exists: no network, command execution, approval grant, external provider call, scheduler or task database.
 - Advisory-only config leaves direct K2 and Hermes **disabled** by default; invalid/unsafe task inputs fail closed; privacy boundary is maintained.
+- Source-pinned OpenMausBot native Codex/Hermes identities are mapped by a pure, offline binding plan; no bot/engine configuration is changed.
 - The task/result schemas, source examples, runtime boundaries, docs, affected readers and source-authored test cases agree.
 - No credentials, logs, user data, CI workflows, installed runtime or model weights committed.
 - Source proof ceiling: `SOURCE_REVIEWED`, `SOURCE_COMMITTED`, `TEST_AUTHORED_NOT_RUN`; no native PASS.
@@ -15,7 +16,7 @@
 ## Phase B — Supervised PC-local preparation (separately selected later)
 
 - Actual authenticated PC-local agent confirmed; record Windows, RTX 3070, VRAM, RAM, driver and running product versions.
-- Verify installed OpenMausBot's Codex, Ollama and Hermes ACP engine definitions, approvals, tool discovery and cancellation.
+- Verify installed OpenMausBot's Codex, Ollama and Hermes ACP engine definitions, approvals, tool discovery and cancellation. Override the documented local bot/thread **Full access** default with enforced approval and filesystem restrictions; examine delegated Chief-of-Staff permission propagation.
 - Verify Codex scoped read-only operation and denial of an unauthorized file write.
 - Confirm model tag/hash, Ollama GPU/CPU residency, context window and inference/tool behavior. Do not treat Q4 model size as free GPU context.
 - Verify local-only tasks cannot be uploaded to Codex/cloud; check host-enforced permissions, not only route preview JSON.

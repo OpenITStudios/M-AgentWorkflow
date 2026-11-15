@@ -13,8 +13,10 @@ $Required = @(
   'docs/operations/acceptance.md', 'config/team.example.yaml',
   'config/model-routing.example.yaml', 'config/routing-policy.example.json',
   'schemas/task-envelope.schema.json', 'schemas/result-envelope.schema.json',
-  'src/policy/route-advice.mjs', 'scripts/route-preview.mjs',
+  'src/policy/route-advice.mjs', 'src/integrations/native-engine-map.mjs',
+  'docs/integrations/native-engines.md', 'scripts/route-preview.mjs',
   'examples/task.readonly.example.json', 'tests/route-advice.test.mjs',
+  'tests/native-engine-map.test.mjs',
   '.agents/skills/m-agentworkflow-integration/SKILL.md'
 )
 $Missing = @($Required | Where-Object { -not (Test-Path -LiteralPath (Join-Path $Root $_) -PathType Leaf) })

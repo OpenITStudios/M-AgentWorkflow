@@ -42,6 +42,10 @@ node scripts/route-preview.mjs examples/task.readonly.example.json
 
 Expected *source logic*, not observed output: route `CODEX`, status `PROPOSED`, `permissionsGranted: false`, `execution: NOT_EXECUTED`. Output is **not** permission to invoke Codex.
 
+## Native engine mapping — source-only; platform runtime not implemented
+
+The [pinned OpenMausBot source](../integrations/native-engines.md) identifies built-in Codex (`codex`) and Hermes (`hermesAgent`) drivers. The pure [native engine map](../../src/integrations/native-engine-map.mjs) turns an advisory route into a **non-executing candidate binding**. The offline route preview includes this mapping. No ACP session, bot creation, installation or host configuration write occurs. Permission state, model identity and tool restrictions must still be proved by the installed host.
+
 ## Adapter boundary — explicitly unimplemented
 
 After actual OpenMausBot/ACP versions and permissions are checked on a supported PC host, an adapter may translate platform-native task identity and current host-authorized scoped permissions into this advisory contract. The actual platform retains state, approvals, execution, recovery and logs. Do not assume `config/*.example.*` is accepted by upstream engines, nor use user-controlled `readiness` flags as authentication.

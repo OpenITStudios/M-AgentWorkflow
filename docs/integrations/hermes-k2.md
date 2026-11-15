@@ -10,6 +10,10 @@
 
 **Hermes ACP/K2:** enable only if the installed Hermes/OpenMausBot versions establish ACP handshake, tool discovery, host-enforced permissions, a two-step tool loop, cancellation and adequate model context. Hermes is a *worker*, not another owner of global task state. The tool path is an extra dependency, not necessary merely to query a local model.
 
+## ACP tool and configuration safety
+
+OpenMausBot v0.1.153 includes a built-in Hermes ACP driver (`hermesAgent`). Its injected model-selection path can change Hermes provider entries in `config.yaml`; inspect the selected default model and any actual configuration change before approving. The default Hermes ACP toolset includes terminal, file-write, patch, execute_code, and delegation. Keep the worker disabled until the **effective** tool/MCP/plugin inventory and host restrictions are independently verified. An Ask prompt is not sufficient evidence of filesystem isolation. See [native engine mapping](native-engines.md).
+
 ## Resource and proof gates
 
 - Local worker concurrency = one; avoid persistent multi-model VRAM contention.
